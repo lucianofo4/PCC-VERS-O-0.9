@@ -20,7 +20,7 @@ class ClockInOutForm(forms.ModelForm):  #shiftForm
 
   class Meta():
     model = Shift 
-    fields = ['name', 'description']
+    fields = ['description']
 
 
 class SelectDateForm(forms.Form):

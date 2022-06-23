@@ -12,11 +12,12 @@ from .models import Shift
 
 # from django.db.models import Sum, Count
 
+
 def initial_page(request):
     return render(request, 'hoursCalc/initial_page.html')
 
+#aqui tem um login requirido
 
-@login_required
 def index(request):
 
     users = User.objects.all()
@@ -34,39 +35,53 @@ def index(request):
 
 
 @login_required
-def submitForm(request): #mudar para
-    
+def submitForm(request):  # mudar para
+
     if request.method == 'POST':
         form = forms.ClockInOutForm(request.POST)
 
-        if form.is_valid():  
+        if form.is_valid():
 
-            new_clock_in = str(form.cleaned_data['date'])+ ' ' + str(form.cleaned_data['clock_in'])  
-            new_clock_out = str(form.cleaned_data['date'])+ ' ' + str(form.cleaned_data['clock_out'])
+            name = request.user
 
-            clock_in_new = datetime.strptime(new_clock_in, '%Y-%d-%m %H:%M:%S'  )
-            clock_out_new = datetime.strptime(new_clock_out, '%Y-%d-%m %H:%M:%S')
+            new_clock_in = str(
+                form.cleaned_data['date']) + ' ' + str(form.cleaned_data['clock_in'])
+            new_clock_out = str(
+                form.cleaned_data['date']) + ' ' + str(form.cleaned_data['clock_out'])
 
-            Shift.objects.create(name=form.cleaned_data['name'],
+            clock_in_new = datetime.strptime(new_clock_in, '%Y-%d-%m %H:%M:%S')
+            clock_out_new = datetime.strptime(
+                new_clock_out, '%Y-%d-%m %H:%M:%S')
+
+            Shift.objects.create(name=name,
                                  clock_in=clock_in_new,
                                  clock_out=clock_out_new,
                                  break_time=form.cleaned_data['break_time'],
                                  date=form.cleaned_data['date'],
                                  description=form.cleaned_data['description'])
-        
-    return redirect(index)
 
-
-@login_required       
-def remove(request, pk): # mudar remover
-    post = get_object_or_404(Shift, pk=pk)
-    post.delete()
-    messages.success(request, f'Your shift has been removed')
     return redirect(index)
 
 
 @login_required
-def selectDate(request, dt="2000-01-01", df="2000-01-01" ): # juntar selectDate com select_periods
+def remove(request, pk):  # mudar remover
+    post = get_object_or_404(Shift, pk=pk)
+
+    user_post_id = post.name.id
+    request_user_id = request.user.id
+
+    if(user_post_id != request_user_id):
+        messages.warning(request, f'você não poder deletar esse porque não foi voce que o fez')
+        return redirect(index)
+
+    post.delete()
+    messages.success(request, f'você removeu')
+    return redirect(index)
+
+#aqui tem um login requirido
+
+# juntar selectDate com select_periods
+def selectDate(request, dt="2000-01-01", df="2000-01-01"):
 
     users = User.objects.all()
     select_date_form = forms.SelectDateForm()
@@ -83,8 +98,9 @@ def selectDate(request, dt="2000-01-01", df="2000-01-01" ): # juntar selectDate 
 
             df = select_date_form.cleaned_data['date_from']
             dt = select_date_form.cleaned_data['date_to']
-            
-            shifts = Shift.objects.select_related('name').filter(date__gte=df, date__lte=dt).order_by('name')
+
+            shifts = Shift.objects.select_related('name').filter(
+                date__gte=df, date__lte=dt).order_by('name')
 
     context = {
         'select_date_form': select_date_form,
@@ -95,11 +111,13 @@ def selectDate(request, dt="2000-01-01", df="2000-01-01" ): # juntar selectDate 
 
     return render(request, 'hoursCalc/select.html', context)
 
-    
-@login_required
-def select_periods(request, date_from, date_to): #filtrar data user
+
+#aqui tem um login requirido
+
+def select_periods(request, date_from, date_to):  # filtrar data user
     users = User.objects.all()
-    objects = Shift.objects.filter(date__gte=date_from).filter(date__lte=date_to)
+    objects = Shift.objects.filter(
+        date__gte=date_from).filter(date__lte=date_to)
 
     context = {
         'users': users,
@@ -111,20 +129,23 @@ def select_periods(request, date_from, date_to): #filtrar data user
 
 
 @login_required
-def update_shift(request, pk): #uptdate shift e submit
-    
+def update_shift(request, pk):  # uptdate shift e submit
+
     shift_to_update = get_object_or_404(Shift, pk=pk)
-   
+
     if request.method == 'POST':
         shift_form = forms.ShiftUpdateForm(request.POST)
 
-        if shift_form.is_valid():  
+        if shift_form.is_valid():
 
-            new_clock_in = str(shift_form.cleaned_data['date'])+ ' ' + str(shift_form.cleaned_data['clock_in'])  
-            new_clock_out = str(shift_form.cleaned_data['date'])+ ' ' + str(shift_form.cleaned_data['clock_out'])
+            new_clock_in = str(
+                shift_form.cleaned_data['date']) + ' ' + str(shift_form.cleaned_data['clock_in'])
+            new_clock_out = str(
+                shift_form.cleaned_data['date']) + ' ' + str(shift_form.cleaned_data['clock_out'])
 
-            clock_in_new = datetime.strptime(new_clock_in, '%Y-%d-%m %H:%M:%S'  )
-            clock_out_new = datetime.strptime(new_clock_out, '%Y-%d-%m %H:%M:%S')
+            clock_in_new = datetime.strptime(new_clock_in, '%Y-%d-%m %H:%M:%S')
+            clock_out_new = datetime.strptime(
+                new_clock_out, '%Y-%d-%m %H:%M:%S')
 
             shift_to_update.clock_in = clock_in_new
             shift_to_update.clock_out = clock_out_new
@@ -157,4 +178,3 @@ def update_shift(request, pk): #uptdate shift e submit
 def shift_detail(request, pk):
     shift = get_object_or_404(Shift, pk=pk)
     return render(request, 'hoursCalc/shift_detail.html', {'shift': shift})
-
