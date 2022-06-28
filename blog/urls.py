@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from . import views as blog_views
+from . import views
 from .views import PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView
 from django.contrib.auth import views as auth_views
 
@@ -11,10 +12,10 @@ urlpatterns = [
     path('post/<int:pk>/', PostDetailView.as_view(), name="post_detail"),
     path('post/<int:pk>/update/', PostUpdateView.as_view(), name="post_update"),
     path('post/<int:pk>/delete/', PostDeleteView.as_view(), name="post_delete"),
-    path('post/new/', PostCreateView.as_view(), name="post_create"), 
+    path('post/new/', PostCreateView.as_view(), name="post_create"),
     path('todo/', blog_views.todo_list, name="todo_list"),
-    path('todo/<int:pk>/', blog_views.complete_todo, name="complete_todo"),
-    path('todo/submit/', blog_views.create_todo_list_post, name="todo_submit"), #add_todo
-    path('todo/deletecomplete/', blog_views.remove_completed_todo, name="delete_complete"),
-    path('todo/deleteall/', blog_views.remove_all_todos, name="delete_all"),
+    path('deu/', blog_views.deu, name='deu'),
+    path('jaime/', blog_views.jaime, name='jaime'),
+    path('pequenodiu/', blog_views.pequenodiu, name='pequenodiu'),
+
 ]
