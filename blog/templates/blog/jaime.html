@@ -3,26 +3,30 @@
 
 {% block content %}
 
-<h1 class="display-2">
-    <center>Jaime</center>
-</h1>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+<h3>
+    <center>Mototista Jaime</center>
+</h3>
 
 <style>
     #map {
+        overflow: hidden;
         width: 600px;
         height: 150%;
         border: 2px solid black;
-        padding: 150px;
-        margin-left: auto;
-        margin-right: auto;
+        padding-bottom: 50%;
+        position: relative;
+        height: 0;
     }
 
-    /* Optional: Makes the sample page fill the window. */
-    html,
-    body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
+    #map body {
+        width: 600px;
+        height: 150%;
+        height: 10%;
+        width: 10%;
+        position: absolute;
     }
 </style>
 
@@ -45,13 +49,50 @@
         });
 
         directionsService.route({
-            origin: 'Loja do Eletricista - Rua Otávio Mangabeira - Morada Nova, Guanambi - BA, Brasil',
+            origin: 'R. Alfredo Boa Sorte, 76 - Guanambi, BA, 46430-000',
             destination: 'Caixa Postal Nº 09 Distrito de - Saída p/ ceraíma - n, – Zona Rural, Guanambi - BA, 46430-000, Brasil',
             waypoints: [
                 {
-                    location: 'Parque da Cidade, Av. Pref. José Neves Teixeira - Guanambi, BA, 46430-000',
+                    location: 'Av. Tiradentes, 1559-1643 - Guanambi, BA, 46430-000',
                     stopover: true
                 },
+
+                {
+                    location: 'R. José Alves Pereira, 442 - Vasconcelos, Guanambi - BA, 46430-000',
+                    stopover: true
+                },
+
+                {
+                    location: 'R. Osvaldo Aranha, 64 - Guanambi, BA, 46430-000',
+                    stopover: true
+                },
+
+                {
+                    location: 'Supermercado Nascimento - Guanambi, BA, 46430-000',
+                    stopover: true
+                },
+
+                {
+                    location: 'Av. Santos Dumont - Guanambi, BA, 46430-000',
+                    stopover: true
+                },
+
+                {
+                    location: 'Vidraçaria Bahia, Av. Sen. Nilo Coelho, 199 - centro, Guanambi - BA, 46430-000',
+                    stopover: true
+                },
+
+                {
+                    location: 'UNEB - Campus XII, 416, R. A, 394, Guanambi - BA, 46430-000',
+                    stopover: true
+                },
+
+                {
+                    location: 'Ceraíma, Guanambi - BA, 46430-000',
+                    stopover: true
+                }
+
+                
 
 
             ],
@@ -69,33 +110,39 @@
 
 
     }
-
-
 </script>
 </head>
 
+
 <body>
-    <div id="map"></div>
+    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+        <div id="map"></div>
 
-    <a class="nav-item nav-link" href="{% url 'todo_list' %}"> Diu</a>
+        <div id="diu">
+            <a button type="button" class="btn btn-outline-secondary" class="nav-item nav-link"
+                href="{% url 'todo_list' %}">
+                Motorista
+                Diu</a>
+        </div>
 
-<div id="deu">
-    <a class="nav-item nav-link" href="{% url 'deu' %}"> Deu</a>
-</div>
+        <div id="deu">
+            <a button type="button" class="btn btn-outline-secondary" class="nav-item nav-link" href="{% url 'deu' %}">
+                Motorista
+                Deu</a>
+        </div>
 
 
-<div id="jaime">
-    <a class="nav-item nav-link" href="{% url 'pequenodiu' %}"> PequenoDiu</a>
-</div>
+        <div id="jaime">
+            <a button type="button" class="btn btn-outline-secondary" class="nav-item nav-link"
+                href="{% url 'pequenodiu' %}"> Motorista Diuzinho</a>
+        </div>
+    </div>
 
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBJq9v0tbMylSJxCLkkSRAchcKcTn-yI4&libraries=places&callback=initMap"
         async></script>
 
-
-
-
-
+    </div>
 
 </body>
 

@@ -3,18 +3,16 @@ from .models import Shift
 # from django.contrib.auth.models import User
 
 
-class ClockInOutForm(forms.ModelForm):  #shiftForm
-  clock_in = forms.TimeField(label='Clock In ', 
+class ClockInOutForm(forms.ModelForm):  #shiftForm 
+  clock_in = forms.TimeField(label='Inicio ', 
                              widget=forms.TimeInput( 
-                             attrs={"class":"form-control", "placeholder":"hour:min:sec"})) 
+                             attrs={"class":"form-control", "placeholder":"horas:min:seg"})) 
   
-  clock_out = forms.TimeField(label='Clock Out', 
+  clock_out = forms.TimeField(label='fim', 
                               widget=forms.TimeInput(
-                              attrs={"class":"form-control", "placeholder":"hour:min:sec"}))
+                              attrs={"class":"form-control", "placeholder":"horas:min:seg"}))
 
-  break_time = forms.DurationField(label='Break', 
-                                   widget=forms.TimeInput(
-                                   attrs={"class":"form-control", "placeholder":"hour:min:sec"}))
+  
 
   date = forms.DateField(widget=forms.SelectDateWidget(attrs={"class":""}))
 
@@ -29,16 +27,14 @@ class SelectDateForm(forms.Form):
 
 
 class ShiftUpdateForm(forms.Form):
-  clock_in = forms.TimeField(label='Clock In ', 
+  clock_in = forms.TimeField(label='Inicio ', 
                              widget=forms.TimeInput( 
                              attrs={"class":"form-control", "placeholder":"hour:min:sec"})) 
   
-  clock_out = forms.TimeField(label='Clock Out', 
+  clock_out = forms.TimeField(label='Fim', 
                               widget=forms.TimeInput(
                               attrs={"class":"form-control", "placeholder":"hour:min:sec"}))
 
-  break_time = forms.DurationField(label='Break', 
-                                   widget=forms.TimeInput(
-                                   attrs={"class":"form-control", "placeholder":"hour:min:sec"}))
+ 
 
   date = forms.DateField(widget=forms.SelectDateWidget(attrs={"class":""}))

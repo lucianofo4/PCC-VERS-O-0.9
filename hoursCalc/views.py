@@ -49,14 +49,13 @@ def submitForm(request):  # mudar para
             new_clock_out = str(
                 form.cleaned_data['date']) + ' ' + str(form.cleaned_data['clock_out'])
 
-            clock_in_new = datetime.strptime(new_clock_in, '%Y-%d-%m %H:%M:%S')
+            clock_in_new = datetime.strptime(new_clock_in, '%Y-%m-%d %H:%M:%S')
             clock_out_new = datetime.strptime(
-                new_clock_out, '%Y-%d-%m %H:%M:%S')
+                new_clock_out, '%Y-%m-%d %H:%M:%S')
 
             Shift.objects.create(name=name,
                                  clock_in=clock_in_new,
                                  clock_out=clock_out_new,
-                                 break_time=form.cleaned_data['break_time'],
                                  date=form.cleaned_data['date'],
                                  description=form.cleaned_data['description'])
 
@@ -71,7 +70,7 @@ def remove(request, pk):  # mudar remover
     request_user_id = request.user.id
 
     if(user_post_id != request_user_id):
-        messages.warning(request, f'você não poder deletar esse porque não foi voce que o fez')
+        messages.warning(request, f'você não poder deletar, porque não foi voce que o fez')
         return redirect(index)
 
     post.delete()
@@ -114,7 +113,7 @@ def selectDate(request, dt="2000-01-01", df="2000-01-01"):
 
 #aqui tem um login requirido
 
-def select_periods(request, date_from, date_to):  # filtrar data user
+def select_periods(request, date_from, date_to):  # filtrar as datas dos turnos 
     users = User.objects.all()
     objects = Shift.objects.filter(
         date__gte=date_from).filter(date__lte=date_to)
@@ -129,7 +128,7 @@ def select_periods(request, date_from, date_to):  # filtrar data user
 
 
 @login_required
-def update_shift(request, pk):  # uptdate shift e submit
+def update_shift(request, pk):  # Atualiza o shift o turno
 
     shift_to_update = get_object_or_404(Shift, pk=pk)
 
@@ -143,18 +142,17 @@ def update_shift(request, pk):  # uptdate shift e submit
             new_clock_out = str(
                 shift_form.cleaned_data['date']) + ' ' + str(shift_form.cleaned_data['clock_out'])
 
-            clock_in_new = datetime.strptime(new_clock_in, '%Y-%d-%m %H:%M:%S')
+            clock_in_new = datetime.strptime(new_clock_in, '%Y-%m-%d %H:%M:%S')
             clock_out_new = datetime.strptime(
-                new_clock_out, '%Y-%d-%m %H:%M:%S')
+                new_clock_out, '%Y-%m-%d %H:%M:%S')
 
             shift_to_update.clock_in = clock_in_new
             shift_to_update.clock_out = clock_out_new
-            shift_to_update.break_time = shift_form.cleaned_data['break_time']
             shift_to_update.date = shift_form.cleaned_data['date']
 
             shift_to_update.save()
 
-            messages.success(request, f'Your shift has been updated!')
+            messages.success(request, f'Turno atualizado')
 
             return redirect(index)
 
@@ -162,8 +160,8 @@ def update_shift(request, pk):  # uptdate shift e submit
         shift_form = forms.ShiftUpdateForm(initial={'clock_in': shift_to_update.clock_in,
                                                     'clock_out': shift_to_update.clock_out,
                                                     'date': shift_to_update.date,
-                                                    'duration': shift_to_update.duration,
-                                                    'break_time': shift_to_update.break_time,
+                                                
+                                                    
                                                     'description': shift_to_update.description,
                                                     })
 

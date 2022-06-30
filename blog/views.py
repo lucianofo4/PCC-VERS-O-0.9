@@ -7,9 +7,9 @@ from django.views.generic import (ListView,
                                   UpdateView,
                                   DeleteView)
 
-from .models import Post, Todo
+from .models import Post
 
-from .forms import TodoPostForm
+
 
 
 class PostListView(ListView):
